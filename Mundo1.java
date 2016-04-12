@@ -21,10 +21,12 @@ public class Mundo1 extends World
     //Variáveis de  controle do Jogo
     private int quadroAtual = 1;
     private int cicloAtual  = 0;
+    private boolean oCenarioPodeAtualizar = true;
 
     //Objetos vivos do Jogo
     private GreenfootImage cenarioInicial;
     private Gato ze;
+    private Plataforma plataforma;
 
     /**
      * Contrutor do cenário.
@@ -43,6 +45,8 @@ public class Mundo1 extends World
         //Colocos os objetos dentro do cenário cada
         addObject(ze, 83, 267);
         addObject(instrucoes, 602, 80);
+        plataforma   = new Plataforma();
+        addObject(plataforma, 336, 295);
 
     }
 
@@ -70,8 +74,9 @@ public class Mundo1 extends World
     public void act()
     {
         //valido se o cenário deve ou não ser atualizado com a proxima cena
-        if(ze.estaIndoPraDireta() || ze.estaIndoPraEsquerda()  ){
+        if(ze.estaIndoPraDireta() || ze.estaIndoPraEsquerda() && oCenarioPodeAtualizar  ){
             projetor( proximaCena()); 
+            atualizaObjetosdoCenario();
         } 
 
         contaCiclo();
@@ -151,5 +156,41 @@ public class Mundo1 extends World
         return novoquadro;
     }
 
+    /**
+     * Atualizo a posição dos objetos do jogo sempre que a cena for atualizada, se o herói foi pra direita a posição do objeto diminui, se para esquerda avança
+     */
+    private void atualizaObjetosdoCenario(){
+
+        if(ze.estaIndoPraDireta()){
+            plataforma.move(TAMANHO_DO_QUADRO * -1);
+        }else{
+           plataforma.move(TAMANHO_DO_QUADRO );
+        }
+
+    }
+    
+    public void pareDeAtualizarOCenario(){
+
+        if(ze.estaIndoPraDireta() && oCenarioPodeAtualizar){
+            plataforma.move(TAMANHO_DO_QUADRO * -1);
+        }
+        if(ze.estaIndoPraDireta() && oCenarioPodeAtualizar){
+           plataforma.move(TAMANHO_DO_QUADRO );
+        }
+
+    }
+    
+    public void oCenarioPodeAtualizar(){
+
+        oCenarioPodeAtualizar = true;
+
+    }
+    
+    public void oCenarioNaoPodeAtualizar(){
+
+        oCenarioPodeAtualizar = false;
+
+    }
+    
 }
 

@@ -68,7 +68,7 @@ public class Gato extends Actor
     /**
      * Atualiza a direção em que o personagem esta virado
      */
-    private void AtualizarDirecaoPara(String sentido){
+    public void AtualizarDirecaoPara(String sentido){
 
         if(sentido.equals("right")){
             estaParaDireita = true;
