@@ -74,8 +74,11 @@ public class Mundo1 extends World
     public void act()
     {
         //valido se o cenário deve ou não ser atualizado com a proxima cena
-        if(ze.estaIndoPraDireta() || ze.estaIndoPraEsquerda() && oCenarioPodeAtualizar  ){
+        if(ze.estaIndoPraDireta() || ze.estaIndoPraEsquerda()  ){
+                          
             projetor( proximaCena()); 
+            
+
             atualizaObjetosdoCenario();
         } 
 
@@ -96,8 +99,10 @@ public class Mundo1 extends World
     private GreenfootImage proximaCena(){
 
         GreenfootImage proximaCena = filme(); //Pego a proxima cena do filme
-        adiantaFilme();  
-        rebobinaFilme();
+       if(oCenarioPodeAtualizar){  
+            adiantaFilme();  
+            rebobinaFilme();
+        }
         return proximaCena;        
     }
 
@@ -161,36 +166,37 @@ public class Mundo1 extends World
      */
     private void atualizaObjetosdoCenario(){
 
-        if(ze.estaIndoPraDireta()){
+        if(ze.estaIndoPraDireta() && oCenarioPodeAtualizar){
             plataforma.move(TAMANHO_DO_QUADRO * -1);
-        }else{
-           plataforma.move(TAMANHO_DO_QUADRO );
+        }
+         if(ze.estaIndoPraEsquerda() && oCenarioPodeAtualizar){
+            plataforma.move(TAMANHO_DO_QUADRO );
         }
 
     }
-    
+
     public void pareDeAtualizarOCenario(){
 
         if(ze.estaIndoPraDireta() && oCenarioPodeAtualizar){
             plataforma.move(TAMANHO_DO_QUADRO * -1);
         }
         if(ze.estaIndoPraDireta() && oCenarioPodeAtualizar){
-           plataforma.move(TAMANHO_DO_QUADRO );
+            plataforma.move(TAMANHO_DO_QUADRO );
         }
 
     }
-    
+
     public void oCenarioPodeAtualizar(){
 
         oCenarioPodeAtualizar = true;
 
     }
-    
+
     public void oCenarioNaoPodeAtualizar(){
 
         oCenarioPodeAtualizar = false;
 
     }
-    
+
 }
 

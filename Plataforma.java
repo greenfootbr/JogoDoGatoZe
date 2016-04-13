@@ -8,12 +8,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Plataforma extends Actor
 {
-    
-    
-    private  Actor ator;
+
+    private  Personagem personagem;
     private  Mundo1 mundo;
-      
-    
+
     
     /**
      * Act - do whatever the Plataforma wants to do. This method is called whenever
@@ -22,43 +20,38 @@ public class Plataforma extends Actor
     public void act() 
     {
         mundo = (Mundo1) getWorld();
-        if(temAlguemAqui()){
-         
-    
-         int ladoDireitoDoator = this.ator.getX() + (this.ator.getImage().getWidth()/2) - Mundo1.TAMANHO_DO_QUADRO;
-         int ladoesquerdoDaPlataforma = 1 + this.getX() - (this.getImage().getWidth()/2);
-            
-          if( (ladoDireitoDoator - ladoesquerdoDaPlataforma) < 5 ){
-                int x = this.ator.getX();
-                int y = this.ator.getY();
-              
-              this.ator.setLocation(x-Mundo1.TAMANHO_DO_QUADRO,y);
-              move(Mundo1.TAMANHO_DO_QUADRO);
-              //mundo.oCenarioNaoPodeAtualizar();
-          }
-            
-            
-        
-        }else{
-            
-            //mundo.oCenarioPodeAtualizar();
+        if(temAlguemAqui()  ){
+
+            int ladoDireitoDoator = this.personagem.getX() + (this.personagem.getImage().getWidth()/2) - Mundo1.TAMANHO_DO_QUADRO;
+            int ladoesquerdoDaPlataforma = 1 + this.getX() - (this.getImage().getWidth()/2);
+
+            if( (ladoDireitoDoator - ladoesquerdoDaPlataforma) < 10 && personagem.estaIndoPraDireta()){
+
+                //int x = this.personagem.getX();
+                //int y = this.personagem.getY();
+
+                mundo.oCenarioNaoPodeAtualizar();
+                //this.ator.setLocation(x-Mundo1.TAMANHO_DO_QUADRO,y);
+                //move(Mundo1.TAMANHO_DO_QUADRO);
+
+            }else{
+
+                mundo.oCenarioPodeAtualizar();
+
+            }
+
         
         }
-        
-        
-        
+
         
     }   
-    
     private boolean temAlguemAqui(){
-    
-        this.ator = getOneIntersectingObject(Actor.class);
-        
-        if(ator != null){
+        this.personagem = (Personagem) getOneIntersectingObject(Personagem.class);
+        if(personagem != null){
             return true;
         }
-        
+
         return false;
-        
+
     }
 }
