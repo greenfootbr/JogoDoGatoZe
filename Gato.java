@@ -8,7 +8,6 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Gato extends Personagem
 {
-   
 
     /**
      * Act - do whatever the Ze wants to do. This method is called whenever
@@ -20,8 +19,8 @@ public class Gato extends Personagem
             caminheParaDireita();
             marcarPasso();
             setImage(retornaImagem());
-            if(getX() < getWorld().getWidth()/3 || estaNoAr){
-                 move(TAMANHO_DO_PASSO);
+            if(getX() < getWorld().getWidth()/6 || estaNoAr){
+                move(TAMANHO_DO_PASSO);
             }
         }
 
@@ -30,7 +29,7 @@ public class Gato extends Personagem
             marcarPasso();
             setImage(retornaImagem());
             if(getX() > getWorld().getWidth()/3|| estaNoAr){
-                  move(TAMANHO_DO_PASSO *(-1));
+                move(TAMANHO_DO_PASSO *(-1));
             }
         }
 
@@ -49,13 +48,12 @@ public class Gato extends Personagem
     /**
      * Utiliza o valor dos ciclos do cenário para criar o atraso necessário a atualização da sprite de movimento do personagem
      */
-    
+
     protected boolean possoAtualizar(){
         Mundo1 mundo = (Mundo1) getWorld();
         return (mundo.getCiclo()% (TAMANHO_DO_PASSO * Mundo1.TAMANHO_DO_QUADRO + Mundo1.TAMANHO_DO_QUADRO/2) ) == 0;
     }
 
-    
 
     /**
      * Controla os passos do personagem para saber qual deve ser a sprite a se utilizar para representar sua caminhada
@@ -109,8 +107,12 @@ public class Gato extends Personagem
             return new GreenfootImage("images/persons/ze/ze_"+proximoPasso+".png");
         }
         //Retorna imagem pulando/caindo lado direito
-        if(estaParaDireita && alturaAtual > 0){
+        if(estaParaDireita && alturaAtual > 0 && estaNoAr){
             return new GreenfootImage("images/persons/ze/ze_2.png");
+        }
+        
+        if(estaParaDireita && alturaAtual > 0 && estaNoSolo){
+            return new GreenfootImage("images/persons/ze/ze_"+proximoPasso+".png");
         }
         //Retorna imagem parado e virado para esquerda
         if(estaParaEsquerda && alturaAtual == 0){
@@ -152,7 +154,6 @@ public class Gato extends Personagem
 
     }
 
-    
 
 }
 

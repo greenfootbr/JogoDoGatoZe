@@ -11,6 +11,7 @@ abstract class Personagem extends Actor
     //Constantes do Gato
     public static final int ALTURA_DO_PULO = 50; 
     public static final int TAMANHO_DO_PASSO = 1;
+    public static final int NIVEL_DO_SOLO = 267;
 
     //Variáveis de  controle dos movimentos
     protected int proximoPasso = 1;
@@ -20,6 +21,8 @@ abstract class Personagem extends Actor
     protected boolean estaParado = true;
     protected boolean estaParaDireita = true;
     protected boolean estaParaEsquerda = false;
+   
+    
     /**
      * Act - do whatever the Personagens wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -100,5 +103,11 @@ abstract class Personagem extends Actor
      */
     public void fiqueParado(){
         estaParado = true;
+    }
+    
+    public void paraDeCair(){
+        
+        estaNoSolo = true;
+        estaNoAr = false;
     }
 }

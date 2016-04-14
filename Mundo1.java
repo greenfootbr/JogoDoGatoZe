@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.List;
 
 /**
  * Classe responsável por criar e gerenciar o cenário do mundo 1 do jogo do gato Zé.
@@ -17,6 +18,8 @@ public class Mundo1 extends World
     public static final int     QUANTIDADE_DE_QUADROS = 350;
     public static final int     TAMANHO_DO_QUADRO = 4;
     public static final double  VELOCIDADE_ATUALIZACAO_QUADROS = 1;
+    public static final int     LARGURA_CENARIO = 700;
+    public static final int     ALTURA_CENARIO = 390;
 
     //Variáveis de  controle do Jogo
     private int quadroAtual = 1;
@@ -26,7 +29,7 @@ public class Mundo1 extends World
     //Objetos vivos do Jogo
     private GreenfootImage cenarioInicial;
     private Gato ze;
-    private Plataforma plataforma;
+    private Objeto plataforma;
 
     /**
      * Contrutor do cenário.
@@ -34,7 +37,7 @@ public class Mundo1 extends World
     public Mundo1()
     {    
         // Crio o Cenanario Inicial 
-        super(700, 390, 1); //Medidas do nosso cenário
+        super(LARGURA_CENARIO, ALTURA_CENARIO, 1); //Medidas do nosso cenário
         cenarioInicial = new GreenfootImage(IMAGEM_INICIAL_MUNDO1); //Crio a imagem inicial do cenário
         setBackground(cenarioInicial); //Coloco a imagem inicial dentro do nosso cenário
 
@@ -46,7 +49,7 @@ public class Mundo1 extends World
         addObject(ze, 83, 267);
         addObject(instrucoes, 602, 80);
         plataforma   = new Plataforma();
-        addObject(plataforma, 336, 295);
+        addObject(plataforma, 336, 336);
 
     }
 
@@ -165,12 +168,19 @@ public class Mundo1 extends World
      * Atualizo a posição dos objetos do jogo sempre que a cena for atualizada, se o herói foi pra direita a posição do objeto diminui, se para esquerda avança
      */
     private void atualizaObjetosdoCenario(){
-
+        
+        List<Plataforma> listaDePlataformas = getObjects(Plataforma.class);
+        
         if(ze.estaIndoPraDireta() && oCenarioPodeAtualizar){
-            plataforma.move(TAMANHO_DO_QUADRO * -1);
+            for(Objeto plataforma : listaDePlataformas){
+                plataforma.move(TAMANHO_DO_QUADRO * -1);
+            }
+            
         }
          if(ze.estaIndoPraEsquerda() && oCenarioPodeAtualizar){
-            plataforma.move(TAMANHO_DO_QUADRO );
+            for(Objeto plataforma : listaDePlataformas){
+                plataforma.move(TAMANHO_DO_QUADRO );
+            }
         }
 
     }
