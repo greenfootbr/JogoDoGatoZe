@@ -19,7 +19,7 @@ public class Gato extends Personagem
             caminheParaDireita();
             marcarPasso();
             setImage(retornaImagem());
-            if(getX() < getWorld().getWidth()/6 || estaNoAr){
+            if(getX() < getWorld().getWidth()/6 || estaPulando){
                 move(TAMANHO_DO_PASSO);
             }
         }
@@ -28,17 +28,20 @@ public class Gato extends Personagem
             caminheParaEsquerda();
             marcarPasso();
             setImage(retornaImagem());
-            if(getX() > getWorld().getWidth()/3|| estaNoAr){
+            if(getX() > getWorld().getWidth()/3|| estaPulando){
                 move(TAMANHO_DO_PASSO *(-1));
             }
         }
 
-        if(Greenfoot.isKeyDown("space")){
-            estaNoAr = true;
+        if(Greenfoot.isKeyDown("space") && estaEmTerraFirme){
+            estaPulando      = true;
+            estaEmTerraFirme = false;
         }
 
-        if(estaNoAr){
+        if(estaPulando){
             pulando();
+        }else if(alturaAtual() == 0){
+            estaEmTerraFirme = true;
         }
 
         ficandoParado();
@@ -53,7 +56,6 @@ public class Gato extends Personagem
         Mundo1 mundo = (Mundo1) getWorld();
         return (mundo.getCiclo()% (TAMANHO_DO_PASSO * Mundo1.TAMANHO_DO_QUADRO + Mundo1.TAMANHO_DO_QUADRO/2) ) == 0;
     }
-
 
     /**
      * Controla os passos do personagem para saber qual deve ser a sprite a se utilizar para representar sua caminhada
@@ -103,25 +105,29 @@ public class Gato extends Personagem
      */
     protected GreenfootImage retornaImagem(){
         //Retorna imagem parado e virado para direita
-        if(estaParaDireita && alturaAtual == 0){
+        if(estaParaDireita && estaNoNivelDoSolo()){
             return new GreenfootImage("images/persons/ze/ze_"+proximoPasso+".png");
         }
+        // Retorna imagem para caminhada a direita quando se esta em terraFirma acima do nivel do solo
+        if(estaParaDireita && estaAcimaDoSolo() && estaEmTerraFirme){
+            return new GreenfootImage("images/persons/ze/ze_"+proximoPasso+".png");
+        } 
         //Retorna imagem pulando/caindo lado direito
-        if(estaParaDireita && alturaAtual > 0 && estaNoAr){
+        if(estaParaDireita && estaAcimaDoSolo() ){
             return new GreenfootImage("images/persons/ze/ze_2.png");
         }
-        
-        if(estaParaDireita && alturaAtual > 0 && estaNoSolo){
-            return new GreenfootImage("images/persons/ze/ze_"+proximoPasso+".png");
-        }
         //Retorna imagem parado e virado para esquerda
-        if(estaParaEsquerda && alturaAtual == 0){
+        if(estaParaEsquerda && estaNoNivelDoSolo()){
             return new GreenfootImage("images/persons/ze/ze_"+proximoPasso+".png");
         }
-        //Retorna imagem pulando/caindo lado esquerda
-        if(estaParaEsquerda && alturaAtual > 0){
+        // Retorna imagem para caminhada a esquerda quando se esta em terraFirma acima do nivel do solo
+        if(estaParaEsquerda && estaAcimaDoSolo() && estaEmTerraFirme){
+            return new GreenfootImage("images/persons/ze/ze_"+proximoPasso+".png");
+        } 
+        //Retorna imagem pulando/caindo lado esquerda 
+        if(estaParaEsquerda && estaAcimaDoSolo()){
             return new GreenfootImage("images/persons/ze/ze_8.png");
-        }
+        } 
 
         return new GreenfootImage("images/persons/ze/ze_1.png");
     }
@@ -131,29 +137,14 @@ public class Gato extends Personagem
      */
     protected void pulando(){
 
-        if(alturaAtual < ALTURA_DO_PULO && estaNoSolo){
+        if(alturaAtual() < ALTURA_DO_PULO){
             setImage(retornaImagem());
-            setLocation(getX(), getY()-4);
-            alturaAtual+=2;
-
-            if(alturaAtual == ALTURA_DO_PULO){
-                estaNoSolo = false;
-            }
-
-        }else if(alturaAtual != 0 ){
-            setLocation(getX(), getY()+4);
-            alturaAtual-=2;
-
-            if(alturaAtual == 0){
-                estaNoAr = false;
-                estaNoSolo = true;
-                setImage(retornaImagem());
-            }
-
-        }       
+            setLocation(getX(), getY() - Mundo1.FORCA_DA_GRAVIDADE *2);
+        }
+        if(alturaAtual() == ALTURA_DO_PULO){
+            estaPulando = false;
+            setImage(retornaImagem());
+        }
 
     }
-
-
 }
-

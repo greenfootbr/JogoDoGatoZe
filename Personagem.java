@@ -9,20 +9,18 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 abstract class Personagem extends Actor
 {
     //Constantes do Gato
-    public static final int ALTURA_DO_PULO = 50; 
+    public static final int ALTURA_DO_PULO = 100; 
     public static final int TAMANHO_DO_PASSO = 1;
-    public static final int NIVEL_DO_SOLO = 267;
 
     //Variáveis de  controle dos movimentos
     protected int proximoPasso = 1;
-    protected int alturaAtual = 0;
-    protected boolean estaNoAr = false;
-    protected boolean estaNoSolo = true;
+    //protected int alturaAtual = 0;
+    protected boolean estaPulando = false;
+    protected boolean estaEmTerraFirme = true;
     protected boolean estaParado = true;
     protected boolean estaParaDireita = true;
     protected boolean estaParaEsquerda = false;
-   
-    
+
     /**
      * Act - do whatever the Personagens wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -51,12 +49,12 @@ abstract class Personagem extends Actor
      * Retorna a imagem que representa cada ação do personagem
      */
     abstract GreenfootImage retornaImagem();
-    
+
     /**
      * Gerencia o movimento do pulo desde o inicio(subida) até a sua aterrisagem
      */
     abstract void pulando();
-    
+
     /**
      * Retornar verdadeiro se atualmente o personagem estiver caminhando para direita
      */
@@ -78,7 +76,7 @@ abstract class Personagem extends Actor
         }
         return false;
     }
-    
+
     /**
      * Atualiza a direção de caminhada do personagem para direita
      */
@@ -89,6 +87,7 @@ abstract class Personagem extends Actor
         estaParado = false;
 
     }
+
     /**
      * Atualiza a direção de caminhada do personagem para esquerda
      */
@@ -98,6 +97,7 @@ abstract class Personagem extends Actor
         estaParado = false;
 
     }
+
     /**
      * Faz o personagem parar de caminhar
      */
@@ -105,9 +105,57 @@ abstract class Personagem extends Actor
         estaParado = true;
     }
     
-    public void paraDeCair(){
-        
-        estaNoSolo = true;
-        estaNoAr = false;
+    //Acho que nao voi precisar mais , basta usar a resistencia de gravidade do objeto
+    public void estaEmTerraFirme(){
+
+        estaEmTerraFirme = true;
+        estaPulando = false;
     }
+
+    public boolean estaNoNivelDoSolo(){
+
+        int alturaDosPes = getY() + getImage().getHeight()/2;
+
+        if(  alturaDosPes - Mundo1.NIVEL_DO_SOLO == 0 ){
+            return true;
+
+        }
+        return false;
+
+    }
+    
+    public boolean estaAcimaDoSolo(){
+
+        int alturaDosPes = getY() + getImage().getHeight()/2;
+
+        if(  alturaDosPes < Mundo1.NIVEL_DO_SOLO){
+            return true;
+
+        }
+        return false;
+
+    }
+    
+    public boolean estaAbaixoDoSolo(){
+
+        int alturaDosPes = getY() + getImage().getHeight()/2;
+
+        if(  alturaDosPes > Mundo1.NIVEL_DO_SOLO){
+            return true;
+
+        }
+        return false;
+
+    }
+    
+    public int alturaAtual(){
+
+        int alturaDosPes = getY() + getImage().getHeight()/2;
+        int alturaAtual  = (alturaDosPes - Mundo1.NIVEL_DO_SOLO) *  -1;
+        return alturaAtual;
+
+    }
+    
+    
+    
 }
