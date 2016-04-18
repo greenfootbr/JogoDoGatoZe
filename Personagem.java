@@ -9,12 +9,12 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 abstract class Personagem extends Actor
 {
     //Constantes do Gato
-    public static final int ALTURA_DO_PULO = 100; 
+    public static final int ALTURA_DO_PULO = 15; 
     public static final int TAMANHO_DO_PASSO = 1;
 
     //Variáveis de  controle dos movimentos
     protected int proximoPasso = 1;
-    //protected int alturaAtual = 0;
+    protected int alturaAtualDoPulo = 0;
     protected boolean estaPulando = false;
     protected boolean estaEmTerraFirme = true;
     protected boolean estaParado = true;

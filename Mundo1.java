@@ -54,6 +54,9 @@ public class Mundo1 extends World
         addObject(instrucoes, 602, 80);
         plataforma   = new Plataforma();
         addObject(plataforma, 336, alturaInicialDoSolo(plataforma));
+        addObject(new Plataforma(), 434, 298);
+        addObject(new Plataforma(), 564, 276);
+        addObject(new Plataforma(), 650,203);
 
     }
 

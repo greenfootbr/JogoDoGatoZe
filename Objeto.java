@@ -68,7 +68,7 @@ abstract class Objeto extends Actor
         int tetoDaPlataforma = this.getY() - (this.getImage().getHeight()/2);
         int tt = tetoDaPlataforma - peDoator;
 
-        if( estaSobreMim(personagem) && (tetoDaPlataforma - peDoator == -1 )){
+        if( estaSobreMim(personagem) && (tetoDaPlataforma - peDoator < 0 )){
 
            mundo.oCenarioPodeAtualizar();
            //O espaço entre o pé e a plataforma é devido a imagem do gato, mostrar isso ao alunos

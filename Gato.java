@@ -137,12 +137,14 @@ public class Gato extends Personagem
      */
     protected void pulando(){
 
-        if(alturaAtual() < ALTURA_DO_PULO){
+        if(alturaAtualDoPulo < ALTURA_DO_PULO){
             setImage(retornaImagem());
+            alturaAtualDoPulo++;
             setLocation(getX(), getY() - Mundo1.FORCA_DA_GRAVIDADE *2);
         }
-        if(alturaAtual() == ALTURA_DO_PULO){
+        if(alturaAtualDoPulo == ALTURA_DO_PULO){
             estaPulando = false;
+            alturaAtualDoPulo = 0;
             setImage(retornaImagem());
         }
 
