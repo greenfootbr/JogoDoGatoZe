@@ -13,7 +13,7 @@ public class Gato extends Personagem
      * Act - do whatever the Ze wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    public void act() 
+    public void act()
     {
         if(Greenfoot.isKeyDown("right")){
             caminheParaDireita();
