@@ -1,7 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Objeto here.
+ * Classe para pai para todo ator não vivo do jogo.
  * 
  * @author  (Jhonatan Morais - jhonatanvinicius@gmail.com or jhonatan@dfjug.org) 
  * @version (1.0)
@@ -25,7 +25,9 @@ abstract class Objeto extends Actor
             bloqueiaQueda();
         }
     } 
-
+    /**
+     * Realiza a colisão esquerda-direita para impedir o avanço através do objeto
+     */
     protected void bloqueiaLadoEsquerdo(){
 
         int ladoDireitoDoator = this.personagem.getX() + (this.personagem.getImage().getWidth()/2) - Mundo1.TAMANHO_DO_QUADRO;
@@ -43,7 +45,9 @@ abstract class Objeto extends Actor
         }
 
     }
-
+    /**
+     * Realiza a colisão direita-esquerda para impedir o avanço através do objeto
+     */
     protected void bloqueiaLadoDireito(){
 
         int ladoEsquerdoDoator = this.personagem.getX() - (this.personagem.getImage().getWidth()/2) - Mundo1.TAMANHO_DO_QUADRO;
@@ -61,7 +65,9 @@ abstract class Objeto extends Actor
         }
 
     }
-
+    /**
+     * Realiza a colisão topo-fundo para impedir o avanço através do objeto
+     */
     protected void bloqueiaQueda(){
 
         int peDoator = this.personagem.getY() + (this.personagem.getImage().getHeight()/2);
@@ -80,7 +86,9 @@ abstract class Objeto extends Actor
         }
 
     }
-
+     /**
+     * verifica se a colisão topo-fundo aconteceu
+     */
     private boolean estaSobreMim(Personagem ator){
         
         int limiteEsquerdoDoAtor = ator.getX() - ator.getImage().getWidth()/2;
@@ -99,6 +107,9 @@ abstract class Objeto extends Actor
 
         
     }
+    /**
+     * verifica se houve um a colisão 
+     */
     protected boolean temAlguemAqui(){
         this.personagem = (Personagem) getOneIntersectingObject(Personagem.class);
         if(personagem != null){

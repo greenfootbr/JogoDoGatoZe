@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Personagem
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Personagens\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ Classe\ pai\ para\ todos\ os\ personagens\ vivos\ do\ jogo.\r\n\ \r\n\ @author\ (Jhonatan\ Morais\ \ -\ jhonatanvinicius@gmail.com\ or\ jhonatan@dfjug.org)\ \r\n\ @version\ (1.0)\r\n
 comment1.params=
 comment1.target=void\ act()
 comment1.text=\r\n\ Act\ -\ do\ whatever\ the\ Personagens\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
@@ -12,12 +12,16 @@ comment11.target=void\ fiqueParado()
 comment11.text=\r\n\ Faz\ o\ personagem\ parar\ de\ caminhar\r\n
 comment12.params=
 comment12.target=void\ estaEmTerraFirme()
+comment12.text=\r\n\ Informa\ ao\ personagem\ que\ ele\ esta\ em\ terra\ firme\r\n
 comment13.params=
 comment13.target=boolean\ estaNoNivelDoSolo()
+comment13.text=\r\n\ \ Verifica\ se\ o\ personagem\ esta\ no\ n\u00EDvel\ do\ solo\r\n
 comment14.params=
 comment14.target=boolean\ estaAcimaDoSolo()
+comment14.text=\r\n\ \ Verifica\ se\ o\ personagem\ esta\ \ acima\ do\ n\u00EDvel\ do\ solo\r\n
 comment15.params=
 comment15.target=boolean\ estaAbaixoDoSolo()
+comment15.text=\r\n\ \ Verifica\ se\ o\ personagem\ esta\ \ abaixo\ do\ n\u00EDvel\ do\ solo\r\n
 comment16.params=
 comment16.target=int\ alturaAtual()
 comment2.params=

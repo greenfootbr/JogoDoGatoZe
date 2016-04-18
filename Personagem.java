@@ -1,10 +1,10 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Personagens here.
+ * Classe pai para todos os personagens vivos do jogo.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author (Jhonatan Morais  - jhonatanvinicius@gmail.com or jhonatan@dfjug.org) 
+ * @version (1.0)
  */
 abstract class Personagem extends Actor
 {
@@ -105,13 +105,17 @@ abstract class Personagem extends Actor
         estaParado = true;
     }
     
-    //Acho que nao voi precisar mais , basta usar a resistencia de gravidade do objeto
+    /**
+     * Informa ao personagem que ele esta em terra firme
+     */
     public void estaEmTerraFirme(){
-
+        //Acho que nao voi precisar mais , basta usar a resistencia de gravidade do objeto
         estaEmTerraFirme = true;
         estaPulando = false;
     }
-
+    /**
+     *  Verifica se o personagem esta no nível do solo
+     */
     public boolean estaNoNivelDoSolo(){
 
         int alturaDosPes = getY() + getImage().getHeight()/2;
@@ -123,7 +127,9 @@ abstract class Personagem extends Actor
         return false;
 
     }
-    
+    /**
+     *  Verifica se o personagem esta  acima do nível do solo
+     */
     public boolean estaAcimaDoSolo(){
 
         int alturaDosPes = getY() + getImage().getHeight()/2;
@@ -135,7 +141,9 @@ abstract class Personagem extends Actor
         return false;
 
     }
-    
+    /**
+     *  Verifica se o personagem esta  abaixo do nível do solo
+     */
     public boolean estaAbaixoDoSolo(){
 
         int alturaDosPes = getY() + getImage().getHeight()/2;
