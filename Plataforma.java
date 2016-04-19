@@ -1,7 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Plataforma here.
+ * Classe para criar uma plataforma básica.
  * 
  * @author (Jhonatan Morais - jhonatanvinicius@gmail.com or jhonatan@dfjug.org) 
  * @version (1.0)

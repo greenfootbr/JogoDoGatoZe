@@ -191,7 +191,9 @@ public class Mundo1 extends World
         }
 
     }
-
+    /**
+     * Solicita ao cenário para parar de atualizar sua movimentação
+     */    
     public void pareDeAtualizarOCenario(){
 
         if(ze.estaIndoPraDireta() && oCenarioPodeAtualizar){
@@ -202,7 +204,9 @@ public class Mundo1 extends World
         }
 
     }
-
+    /**
+     * Solicita ao cenário para voltar atualizar sua movimentação
+     */  
     public void oCenarioPodeAtualizar(){
 
         oCenarioPodeAtualizar = true;
