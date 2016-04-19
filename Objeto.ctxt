@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Objeto
+comment0.text=\r\n\ Classe\ para\ pai\ para\ todo\ ator\ n\u00E3o\ vivo\ do\ jogo.\r\n\ \r\n\ @author\ \ (Jhonatan\ Morais\ -\ jhonatanvinicius@gmail.com\ or\ jhonatan@dfjug.org)\ \r\n\ @version\ (1.0)\r\n
+comment1.params=
+comment1.target=void\ act()
+comment1.text=\r\n\ Act\ -\ do\ whatever\ the\ Objeto\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
+comment2.params=
+comment2.target=void\ bloqueiaLadoEsquerdo()
+comment2.text=\r\n\ Realiza\ a\ colis\u00E3o\ esquerda-direita\ para\ impedir\ o\ avan\u00E7o\ atrav\u00E9s\ do\ objeto\r\n
+comment3.params=
+comment3.target=void\ bloqueiaLadoDireito()
+comment3.text=\r\n\ Realiza\ a\ colis\u00E3o\ direita-esquerda\ para\ impedir\ o\ avan\u00E7o\ atrav\u00E9s\ do\ objeto\r\n
+comment4.params=
+comment4.target=void\ bloqueiaQueda()
+comment4.text=\r\n\ Realiza\ a\ colis\u00E3o\ topo-fundo\ para\ impedir\ o\ avan\u00E7o\ atrav\u00E9s\ do\ objeto\r\n
+comment5.params=ator
+comment5.target=boolean\ estaSobreMim(Personagem)
+comment5.text=\r\n\ verifica\ se\ a\ colis\u00E3o\ topo-fundo\ aconteceu\r\n
+comment6.params=
+comment6.target=boolean\ temAlguemAqui()
+comment6.text=\r\n\ verifica\ se\ houve\ um\ a\ colis\u00E3o\ \r\n
+numComments=7
