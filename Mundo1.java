@@ -50,13 +50,14 @@ public class Mundo1 extends World
         Instrucoes instrucoes = new  Instrucoes();
 
         //Colocos os objetos dentro do cenário cada
-        addObject(ze, 83, alturaInicialDoSolo(ze));
+        
         addObject(instrucoes, 602, 80);
         plataforma   = new Plataforma();
         addObject(plataforma, 336, alturaInicialDoSolo(plataforma));
         addObject(new Plataforma(), 434, 298);
         addObject(new Plataforma(), 564, 276);
         addObject(new Plataforma(), 650,203);
+        addObject(ze, 83, alturaInicialDoSolo(ze));
 
     }
 
