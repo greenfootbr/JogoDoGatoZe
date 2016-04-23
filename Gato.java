@@ -6,51 +6,42 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (Jhonatan Morais - jhonatanvinicius@gmail.com or jhonatan@dfjug.org) 
  * @version (1.0)
  */
-public class Gato extends Actor
+public class Gato extends Personagem
 {
-    //Constantes do Gato
-    public static final int ALTURA_DO_PULO = 30; 
-    public static final int TAMANHO_DO_PASSO = 1;
-
-    //Variáveis de  controle dos movimentos
-    private int proximoPasso = 1;
-    private int alturaAtual = 0;
-    private boolean estaNoAr = false;
-    private boolean estaNoSolo = true;
-    private boolean estaParado = true;
-    private boolean estaParaDireita = true;
-    private boolean estaParaEsquerda = false;
 
     /**
      * Act - do whatever the Ze wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    public void act() 
+    public void act()
     {
         if(Greenfoot.isKeyDown("right")){
-            AtualizarDirecaoPara("right");
+            caminheParaDireita();
             marcarPasso();
             setImage(retornaImagem());
-            if(getX() < getWorld().getWidth()/3 || estaNoAr){
+            if(getX() < getWorld().getWidth()/6 || estaPulando){
                 move(TAMANHO_DO_PASSO);
             }
         }
 
         if(Greenfoot.isKeyDown("left")){
-            AtualizarDirecaoPara("left");
+            caminheParaEsquerda();
             marcarPasso();
             setImage(retornaImagem());
-            if(getX() > getWorld().getWidth()/3|| estaNoAr){
+            if(getX() > getWorld().getWidth()/3|| estaPulando){
                 move(TAMANHO_DO_PASSO *(-1));
             }
         }
 
-        if(Greenfoot.isKeyDown("space")){
-            estaNoAr = true;
+        if(Greenfoot.isKeyDown("space") && estaEmTerraFirme){
+            estaPulando      = true;
+            estaEmTerraFirme = false;
         }
 
-        if(estaNoAr){
+        if(estaPulando){
             pulando();
+        }else if(alturaAtual() == 0){
+            estaEmTerraFirme = true;
         }
 
         ficandoParado();
@@ -60,38 +51,16 @@ public class Gato extends Actor
     /**
      * Utiliza o valor dos ciclos do cenário para criar o atraso necessário a atualização da sprite de movimento do personagem
      */
-    private boolean possoAtualizar(){
+
+    protected boolean possoAtualizar(){
         Mundo1 mundo = (Mundo1) getWorld();
         return (mundo.getCiclo()% (TAMANHO_DO_PASSO * Mundo1.TAMANHO_DO_QUADRO + Mundo1.TAMANHO_DO_QUADRO/2) ) == 0;
     }
 
     /**
-     * Atualiza a direção em que o personagem esta virado
-     */
-    private void AtualizarDirecaoPara(String sentido){
-
-        if(sentido.equals("right")){
-            estaParaDireita = true;
-            estaParaEsquerda = false;
-            estaParado = false;
-        }else if(sentido.equals("left")){
-            estaParaDireita = false;
-            estaParaEsquerda = true;
-            estaParado = false;
-        }else if(sentido.equals("stop")){
-            estaParado = true;
-        }else{
-            estaParaDireita = true;
-            estaParaEsquerda = false;
-            estaParado = true;
-
-        }
-    }
-
-    /**
      * Controla os passos do personagem para saber qual deve ser a sprite a se utilizar para representar sua caminhada
      */
-    private void marcarPasso(){
+    protected void marcarPasso(){
 
         if(estaParaDireita ){
 
@@ -117,16 +86,16 @@ public class Gato extends Actor
     /**
      * Garante que ao ficar parado a sprite do personagem seja atualizada para a posição inicial
      */
-    private void ficandoParado(){
+    protected void ficandoParado(){
         if(proximoPasso >= 1 && proximoPasso < 7 && estaParaDireita && !Greenfoot.isKeyDown("right")){
             proximoPasso = 1;
             setImage(retornaImagem());
-            AtualizarDirecaoPara("stop");
+            fiqueParado();
         }
         if(proximoPasso > 6 && proximoPasso < 13 && estaParaEsquerda && !Greenfoot.isKeyDown("left")){
             proximoPasso = 7;
             setImage(retornaImagem());
-            AtualizarDirecaoPara("stop");
+            fiqueParado();
         }
 
     }
@@ -134,23 +103,31 @@ public class Gato extends Actor
     /**
      * Retorna a imagem que representa cada ação do personagem
      */
-    private GreenfootImage retornaImagem(){
+    protected GreenfootImage retornaImagem(){
         //Retorna imagem parado e virado para direita
-        if(estaParaDireita && alturaAtual == 0){
+        if(estaParaDireita && estaNoNivelDoSolo()){
             return new GreenfootImage("images/persons/ze/ze_"+proximoPasso+".png");
         }
+        // Retorna imagem para caminhada a direita quando se esta em terraFirma acima do nivel do solo
+        if(estaParaDireita && estaAcimaDoSolo() && estaEmTerraFirme){
+            return new GreenfootImage("images/persons/ze/ze_"+proximoPasso+".png");
+        } 
         //Retorna imagem pulando/caindo lado direito
-        if(estaParaDireita && alturaAtual > 0){
+        if(estaParaDireita && estaAcimaDoSolo() ){
             return new GreenfootImage("images/persons/ze/ze_2.png");
         }
         //Retorna imagem parado e virado para esquerda
-        if(estaParaEsquerda && alturaAtual == 0){
+        if(estaParaEsquerda && estaNoNivelDoSolo()){
             return new GreenfootImage("images/persons/ze/ze_"+proximoPasso+".png");
         }
-        //Retorna imagem pulando/caindo lado esquerda
-        if(estaParaEsquerda && alturaAtual > 0){
+        // Retorna imagem para caminhada a esquerda quando se esta em terraFirma acima do nivel do solo
+        if(estaParaEsquerda && estaAcimaDoSolo() && estaEmTerraFirme){
+            return new GreenfootImage("images/persons/ze/ze_"+proximoPasso+".png");
+        } 
+        //Retorna imagem pulando/caindo lado esquerda 
+        if(estaParaEsquerda && estaAcimaDoSolo()){
             return new GreenfootImage("images/persons/ze/ze_8.png");
-        }
+        } 
 
         return new GreenfootImage("images/persons/ze/ze_1.png");
     }
@@ -158,52 +135,18 @@ public class Gato extends Actor
     /**
      * Gerencia o movimento do pulo desde o inicio(subida) até a sua aterrisagem
      */
-    private void pulando(){
+    protected void pulando(){
 
-        if(alturaAtual < ALTURA_DO_PULO && estaNoSolo){
+        if(alturaAtualDoPulo < ALTURA_DO_PULO){
             setImage(retornaImagem());
-            setLocation(getX(), getY()-4);
-            alturaAtual+=2;
-
-            if(alturaAtual == ALTURA_DO_PULO){
-                estaNoSolo = false;
-            }
-
-        }else if(alturaAtual != 0 ){
-            setLocation(getX(), getY()+4);
-            alturaAtual-=2;
-
-            if(alturaAtual == 0){
-                estaNoAr = false;
-                estaNoSolo = true;
-                setImage(retornaImagem());
-            }
-
-        }       
-
-    }
-
-    /**
-     * Retornar verdadeiro se atualmente o personagem estiver caminhando para direita
-     */
-    public boolean estaIndoPraDireta(){
-
-        if(proximoPasso >= 1 && proximoPasso < 7 && estaParaDireita && !estaParado ){
-            return true;
+            alturaAtualDoPulo++;
+            setLocation(getX(), getY() - Mundo1.FORCA_DA_GRAVIDADE *2);
         }
-        return false;
-    }
-
-    /**
-     * Retornar verdadeiro se atualmente o personagem estiver caminhando para esquerda
-     */
-    public boolean estaIndoPraEsquerda(){
-
-        if(proximoPasso >= 7 && proximoPasso < 13 && estaParaEsquerda && !estaParado){
-            return true;
+        if(alturaAtualDoPulo == ALTURA_DO_PULO){
+            estaPulando = false;
+            alturaAtualDoPulo = 0;
+            setImage(retornaImagem());
         }
-        return false;
-    }
 
+    }
 }
-

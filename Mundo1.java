@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.List;
 
 /**
  * Classe responsável por criar e gerenciar o cenário do mundo 1 do jogo do gato Zé.
@@ -18,13 +19,21 @@ public class Mundo1 extends World
     public static final int     TAMANHO_DO_QUADRO = 4;
     public static final double  VELOCIDADE_ATUALIZACAO_QUADROS = 1;
 
+    //Constantes da Natureza do mundo
+    public static final int     LARGURA_CENARIO = 700;
+    public static final int     ALTURA_CENARIO = 390;
+    public static final int     NIVEL_DO_SOLO = 340;
+    public static final int     FORCA_DA_GRAVIDADE = 5;
+
     //Variáveis de  controle do Jogo
     private int quadroAtual = 1;
     private int cicloAtual  = 0;
+    private boolean oCenarioPodeAtualizar = true;
 
     //Objetos vivos do Jogo
     private GreenfootImage cenarioInicial;
     private Gato ze;
+    private Objeto plataforma;
 
     /**
      * Contrutor do cenário.
@@ -32,7 +41,7 @@ public class Mundo1 extends World
     public Mundo1()
     {    
         // Crio o Cenanario Inicial 
-        super(700, 390, 1); //Medidas do nosso cenário
+        super(LARGURA_CENARIO, ALTURA_CENARIO, 1); //Medidas do nosso cenário
         cenarioInicial = new GreenfootImage(IMAGEM_INICIAL_MUNDO1); //Crio a imagem inicial do cenário
         setBackground(cenarioInicial); //Coloco a imagem inicial dentro do nosso cenário
 
@@ -41,8 +50,13 @@ public class Mundo1 extends World
         Instrucoes instrucoes = new  Instrucoes();
 
         //Colocos os objetos dentro do cenário cada
-        addObject(ze, 83, 267);
+        addObject(ze, 83, alturaInicialDoSolo(ze));
         addObject(instrucoes, 602, 80);
+        plataforma   = new Plataforma();
+        addObject(plataforma, 336, alturaInicialDoSolo(plataforma));
+        addObject(new Plataforma(), 434, 298);
+        addObject(new Plataforma(), 564, 276);
+        addObject(new Plataforma(), 650,203);
 
     }
 
@@ -71,10 +85,14 @@ public class Mundo1 extends World
     {
         //valido se o cenário deve ou não ser atualizado com a proxima cena
         if(ze.estaIndoPraDireta() || ze.estaIndoPraEsquerda()  ){
+
             projetor( proximaCena()); 
+
+            atualizaObjetosdoCenario();
         } 
 
         contaCiclo();
+        aplicarForcaDaGravidade();
     }
 
     /**
@@ -91,8 +109,10 @@ public class Mundo1 extends World
     private GreenfootImage proximaCena(){
 
         GreenfootImage proximaCena = filme(); //Pego a proxima cena do filme
-        adiantaFilme();  
-        rebobinaFilme();
+        if(oCenarioPodeAtualizar){  
+            adiantaFilme();  
+            rebobinaFilme();
+        }
         return proximaCena;        
     }
 
@@ -149,6 +169,85 @@ public class Mundo1 extends World
         String nomeDoArquivo = NOME_ARQUIVO_IMAGEM + proximoQuadro + EXTENSAO_ARQUIVO_IMAGEM;
         GreenfootImage novoquadro = new GreenfootImage(nomeDoArquivo);
         return novoquadro;
+    }
+
+    /**
+     * Atualizo a posição dos objetos do jogo sempre que a cena for atualizada, se o herói foi pra direita a posição do objeto diminui, se para esquerda avança
+     */
+    private void atualizaObjetosdoCenario(){
+
+        List<Plataforma> listaDePlataformas = getObjects(Plataforma.class);
+
+        if(ze.estaIndoPraDireta() && oCenarioPodeAtualizar){
+            for(Objeto plataforma : listaDePlataformas){
+                plataforma.move(TAMANHO_DO_QUADRO * -1);
+            }
+
+        }
+        if(ze.estaIndoPraEsquerda() && oCenarioPodeAtualizar){
+            for(Objeto plataforma : listaDePlataformas){
+                plataforma.move(TAMANHO_DO_QUADRO );
+            }
+        }
+
+    }
+    /**
+     * Solicita ao cenário para parar de atualizar sua movimentação
+     */    
+    public void pareDeAtualizarOCenario(){
+
+        if(ze.estaIndoPraDireta() && oCenarioPodeAtualizar){
+            plataforma.move(TAMANHO_DO_QUADRO * -1);
+        }
+        if(ze.estaIndoPraDireta() && oCenarioPodeAtualizar){
+            plataforma.move(TAMANHO_DO_QUADRO );
+        }
+
+    }
+    /**
+     * Solicita ao cenário para voltar atualizar sua movimentação
+     */  
+    public void oCenarioPodeAtualizar(){
+
+        oCenarioPodeAtualizar = true;
+
+    }
+
+    public void oCenarioNaoPodeAtualizar(){
+
+        oCenarioPodeAtualizar = false;
+
+    }
+
+    /**
+     * Retorna a altura inicial do solo para o ator solicitado
+     */
+    private int alturaInicialDoSolo(Actor ator){
+
+        return NIVEL_DO_SOLO - ator.getImage().getHeight()/2;
+
+    }
+
+    /**
+     * Aplica a gravidade em todos os atores do tipo personagem
+     */
+    public void aplicarForcaDaGravidade(){
+
+        List<Personagem>  listaDePersonagem = getObjects(Personagem.class);
+        for(Personagem ator : listaDePersonagem){
+            int alturaDoGato = ator.alturaAtual();
+            int alturaIicialSolo = alturaInicialDoSolo(ator);
+            if(alturaDoGato > 0)  {  //temporario
+                ator.setLocation(ator.getX(), ator.getY() + FORCA_DA_GRAVIDADE);
+            }
+            if(ator.getY() >= (ALTURA_CENARIO -1) || ator.getY() <= 0 ){
+
+                removeObject(ator);
+
+            }
+
+        }
+
     }
 
 }
