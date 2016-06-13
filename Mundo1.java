@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Classe responsável por criar e gerenciar o cenário do mundo 1 do jogo do gato Zé.
@@ -22,7 +23,7 @@ public class Mundo1 extends World
     //Constantes da Natureza do mundo
     public static final int     LARGURA_CENARIO = 700;
     public static final int     ALTURA_CENARIO = 390;
-    public static final int     NIVEL_DO_SOLO = 340;
+    public static final int     NIVEL_DO_SOLO = 390;
     public static final int     FORCA_DA_GRAVIDADE = 5;
 
     //Variáveis de  controle do Jogo
@@ -50,14 +51,14 @@ public class Mundo1 extends World
         Instrucoes instrucoes = new  Instrucoes();
 
         //Colocos os objetos dentro do cenário cada
-        
+
         addObject(instrucoes, 602, 80);
-        plataforma   = new Plataforma();
-        addObject(plataforma, 336, alturaInicialDoSolo(plataforma));
-        addObject(new Plataforma(), 434, 298);
-        addObject(new Plataforma(), 564, 276);
-        addObject(new Plataforma(), 650,203);
-        addObject(ze, 83, alturaInicialDoSolo(ze));
+        Piso piso   = new Piso();
+        addObject(new Piso(), 83, alturaInicialDoSolo(piso));
+        //addObject(new Plataforma(), 434, 298);
+        //addObject(new Plataforma(), 564, 276);
+        //addObject(new Plataforma(), 650,203);
+        addObject(ze, 83, alturaInicialDoSolo(ze)-100);
 
     }
 
@@ -171,27 +172,55 @@ public class Mundo1 extends World
         GreenfootImage novoquadro = new GreenfootImage(nomeDoArquivo);
         return novoquadro;
     }
-
+    /**
+     * Retorna todos os objetos do cenário que deve ser atualizados conforme a movimentaçao do personagem
+     * OBS: no futuro poderá retor nar apenas a classe Objeto que assim ja deve resolver... vamos ver
+     */
+    private List<Actor> getObjetosDoCenario(){
+        List<Actor> listaDeObjetos = new ArrayList<Actor>();
+        listaDeObjetos.addAll( getObjects(Plataforma.class));
+        listaDeObjetos.addAll( getObjects(Piso.class));
+        return listaDeObjetos;
+    
+    }
+    /**
+     * Metodo temporário para teste de movimento
+     */
+    private void retirarObjetoDaCena(Actor objeto){
+        
+        
+        
+        if(objeto.getX() == 0) {
+            Plataforma p = new Plataforma();
+            addObject(p, LARGURA_CENARIO, objeto.getY());
+            removeObject(objeto);
+            
+        }
+    
+    }
+    
+    
     /**
      * Atualizo a posição dos objetos do jogo sempre que a cena for atualizada, se o herói foi pra direita a posição do objeto diminui, se para esquerda avança
      */
     private void atualizaObjetosdoCenario(){
 
-        List<Plataforma> listaDePlataformas = getObjects(Plataforma.class);
+        List<Actor> objetosDoCenario = getObjetosDoCenario();
 
         if(ze.estaIndoPraDireta() && oCenarioPodeAtualizar){
-            for(Objeto plataforma : listaDePlataformas){
-                plataforma.move(TAMANHO_DO_QUADRO * -1);
+            for(Actor objeto : objetosDoCenario){
+                objeto.move(TAMANHO_DO_QUADRO * -1);
+                retirarObjetoDaCena(objeto);
             }
-
         }
         if(ze.estaIndoPraEsquerda() && oCenarioPodeAtualizar){
-            for(Objeto plataforma : listaDePlataformas){
-                plataforma.move(TAMANHO_DO_QUADRO );
+            for(Actor objeto : objetosDoCenario){
+                objeto.move(TAMANHO_DO_QUADRO );
             }
         }
 
     }
+
     /**
      * Solicita ao cenário para parar de atualizar sua movimentação
      */    
@@ -205,6 +234,7 @@ public class Mundo1 extends World
         }
 
     }
+
     /**
      * Solicita ao cenário para voltar atualizar sua movimentação
      */  
