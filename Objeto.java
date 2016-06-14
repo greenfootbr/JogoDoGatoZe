@@ -34,7 +34,7 @@ abstract class Objeto extends Actor
         int ladoDireitoDoator = this.personagem.getX() + (this.personagem.getImage().getWidth()/2) - Mundo1.TAMANHO_DO_QUADRO;
         int ladoesquerdoDaPlataforma = 1 + this.getX() - (this.getImage().getWidth()/2);
         if(personagem.estaIndoPraDireta()){
-            if( (ladoDireitoDoator - ladoesquerdoDaPlataforma) < 10 ){
+            if( (ladoDireitoDoator - ladoesquerdoDaPlataforma) < 10 && !oPersonagemEstaAcimaDoObjeto() && !estaSobreMim(this.personagem) ){
 
                 mundo.oCenarioNaoPodeAtualizar();
                 personagem.fiqueParado();
@@ -47,6 +47,7 @@ abstract class Objeto extends Actor
         }
 
     }
+
     /**
      * Realiza a colisão direita-esquerda para impedir o avanço através do objeto
      */
@@ -55,7 +56,7 @@ abstract class Objeto extends Actor
         int ladoEsquerdoDoator = this.personagem.getX() - (this.personagem.getImage().getWidth()/2) - Mundo1.TAMANHO_DO_QUADRO;
         int ladoDireitoDaPlataforma = 1 + this.getX() + (this.getImage().getWidth()/2);
         if (personagem.estaIndoPraEsquerda()){
-            if( (ladoDireitoDaPlataforma - ladoEsquerdoDoator) < 10){
+            if( (ladoDireitoDaPlataforma - ladoEsquerdoDoator) < 10 && !oPersonagemEstaAcimaDoObjeto() && !estaSobreMim(this.personagem)){
 
                 mundo.oCenarioNaoPodeAtualizar();
                 personagem.fiqueParado();
@@ -120,9 +121,23 @@ abstract class Objeto extends Actor
         this.personagem = (Personagem) getOneIntersectingObject(Personagem.class);
         if(personagem != null){
             return true;
-        }
+        }    
 
         return false;
 
+    }
+
+    /**
+     * Retorna a altura do topo do objeto
+     */
+    public int alturaDoTopo(){
+        return getY() - getImage().getHeight()/2;
+    }
+
+    public boolean oPersonagemEstaAcimaDoObjeto(){
+        int pes = this.personagem.alturaDosPes();
+        int topo = alturaDoTopo();
+        boolean tt = (pes - topo) <= 4; // usei a diferença pq a precisão de (pes < topo) não nos atende, o valor 4 foi selecionado pq é o valor minimo da diferença de (pes - topo)
+        return tt;
     }
 }

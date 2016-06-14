@@ -51,15 +51,15 @@ public class Mundo1 extends World
         Instrucoes instrucoes = new  Instrucoes();
 
         //Colocos os objetos dentro do cenário cada
-
+        //criaSolo();
         addObject(instrucoes, 602, 80);
-        Piso piso   = new Piso();
-        addObject(new Piso(), 83, alturaInicialDoSolo(piso));
+
         //addObject(new Plataforma(), 434, 298);
         //addObject(new Plataforma(), 564, 276);
         //addObject(new Plataforma(), 650,203);
         addObject(ze, 83, alturaInicialDoSolo(ze)-100);
 
+        prepare();
     }
 
     /**
@@ -92,7 +92,7 @@ public class Mundo1 extends World
 
             atualizaObjetosdoCenario();
         } 
-
+        //criaSolo();
         contaCiclo();
         aplicarForcaDaGravidade();
     }
@@ -172,34 +172,39 @@ public class Mundo1 extends World
         GreenfootImage novoquadro = new GreenfootImage(nomeDoArquivo);
         return novoquadro;
     }
+
     /**
      * Retorna todos os objetos do cenário que deve ser atualizados conforme a movimentaçao do personagem
      * OBS: no futuro poderá retor nar apenas a classe Objeto que assim ja deve resolver... vamos ver
      */
     private List<Actor> getObjetosDoCenario(){
         List<Actor> listaDeObjetos = new ArrayList<Actor>();
-        listaDeObjetos.addAll( getObjects(Plataforma.class));
-        listaDeObjetos.addAll( getObjects(Piso.class));
+        //listaDeObjetos.addAll( getObjects(Plataforma.class));
+        //listaDeObjetos.addAll( getObjects(Piso.class));
+        listaDeObjetos.addAll( getObjects(Objeto.class)); // Chamada generica
         return listaDeObjetos;
-    
+
     }
+
     /**
      * Metodo temporário para teste de movimento
      */
     private void retirarObjetoDaCena(Actor objeto){
-        
-        
-        
+
         if(objeto.getX() == 0) {
-            Plataforma p = new Plataforma();
+            PisoReto p = new PisoReto();
             addObject(p, LARGURA_CENARIO, objeto.getY());
             removeObject(objeto);
-            
+
+        }else if(objeto.getX() == LARGURA_CENARIO-1) {
+            PisoReto p = new PisoReto();
+            addObject(p, 0, objeto.getY());
+            removeObject(objeto);
+
         }
-    
+
     }
-    
-    
+
     /**
      * Atualizo a posição dos objetos do jogo sempre que a cena for atualizada, se o herói foi pra direita a posição do objeto diminui, se para esquerda avança
      */
@@ -216,6 +221,7 @@ public class Mundo1 extends World
         if(ze.estaIndoPraEsquerda() && oCenarioPodeAtualizar){
             for(Actor objeto : objetosDoCenario){
                 objeto.move(TAMANHO_DO_QUADRO );
+                retirarObjetoDaCena(objeto);
             }
         }
 
@@ -280,6 +286,32 @@ public class Mundo1 extends World
         }
 
     }
+    // Temporario apenas para teste
+    private void criaSolo(){
+        int larguraPiso = 87;
+        int posicaoDoQuadro = 0; //será a posição da fileta(slice/quadros) dentro da imagem do cenário
+        while(posicaoDoQuadro < getWidth()){ // Começo a criar a imagem
+            addObject(new PisoReto(), posicaoDoQuadro, 363);
+            posicaoDoQuadro += 87; // atualizo para a posição da nova fileta
+        }
 
+    }
+
+    /**
+     * Prepara o mundo para o início do programa.
+     * Ou seja: criar os objetos iniciais e adicioná-los ao mundo.
+     */
+    private void prepare()
+    {
+        PisoReto pisoreto = new PisoReto();
+        addObject(pisoreto,320,363);
+        pisoreto.setLocation(329,363);
+        PisoReto pisoreto2 = new PisoReto();
+        addObject(pisoreto2,423,363);
+        pisoreto2.setLocation(416,363);
+        PisoReto pisoreto3 = new PisoReto();
+        addObject(pisoreto3,510,363);
+        pisoreto3.setLocation(503,363);
+    }
 }
 
