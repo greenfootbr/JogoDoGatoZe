@@ -20,7 +20,7 @@ public class Gato extends Personagem
             marcarPasso();
             setImage(retornaImagem());
             if(getX() < getWorld().getWidth()/6 || estaPulando){
-                move(TAMANHO_DO_PASSO);
+                //move(TAMANHO_DO_PASSO);
             }
         }
 
@@ -29,7 +29,7 @@ public class Gato extends Personagem
             marcarPasso();
             setImage(retornaImagem());
             if(getX() > getWorld().getWidth()/3|| estaPulando){
-                move(TAMANHO_DO_PASSO *(-1));
+              // move(TAMANHO_DO_PASSO *(-1));
             }
         }
 
