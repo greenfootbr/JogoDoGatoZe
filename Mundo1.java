@@ -312,6 +312,17 @@ public class Mundo1 extends World
         PisoReto pisoreto3 = new PisoReto();
         addObject(pisoreto3,510,363);
         pisoreto3.setLocation(503,363);
+        PisoReto pisoreto4 = new PisoReto();
+        addObject(pisoreto4,418,315);
+        pisoreto4.setLocation(408,308);
+        PisoReto pisoreto5 = new PisoReto();
+        addObject(pisoreto5,295,223);
+        pisoreto5.setLocation(293,223);
+        pisoreto5.setLocation(495,308);
+        PisoReto pisoreto6 = new PisoReto();
+        addObject(pisoreto6,663,271);
+        pisoreto6.setLocation(657,257);
+        pisoreto6.setLocation(641,309);
     }
 }
 
