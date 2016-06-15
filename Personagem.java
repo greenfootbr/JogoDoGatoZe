@@ -118,7 +118,7 @@ abstract class Personagem extends Actor
      */
     public boolean estaNoNivelDoSolo(){
 
-        int alturaDosPes = getY() + getImage().getHeight()/2;
+        int alturaDosPes = alturaDosPes();
 
         if(  alturaDosPes - Mundo1.NIVEL_DO_SOLO == 0 ){
             return true;
@@ -132,7 +132,7 @@ abstract class Personagem extends Actor
      */
     public boolean estaAcimaDoSolo(){
 
-        int alturaDosPes = getY() + getImage().getHeight()/2;
+        int alturaDosPes = alturaDosPes();
 
         if(  alturaDosPes < Mundo1.NIVEL_DO_SOLO){
             return true;
@@ -146,7 +146,7 @@ abstract class Personagem extends Actor
      */
     public boolean estaAbaixoDoSolo(){
 
-        int alturaDosPes = getY() + getImage().getHeight()/2;
+        int alturaDosPes = alturaDosPes();
 
         if(  alturaDosPes > Mundo1.NIVEL_DO_SOLO){
             return true;
@@ -155,13 +155,22 @@ abstract class Personagem extends Actor
         return false;
 
     }
-    
+    /**
+     * Retorna a altura atual do personagem considerando a altura dos pés
+     */
     public int alturaAtual(){
 
-        int alturaDosPes = getY() + getImage().getHeight()/2;
-        int alturaAtual  = (alturaDosPes - Mundo1.NIVEL_DO_SOLO) *  -1;
+        int alturaDosPes = alturaDosPes();
+        int alturaAtual  = (alturaDosPes - Mundo1.NIVEL_DO_SOLO) *  -1; // apenas torna o valor positivo
         return alturaAtual;
 
+    }
+    
+    /**
+     * Retorna a altura dos pés do personagem dentro do jogo
+     */
+    public int alturaDosPes(){
+        return getY() + getImage().getHeight()/2;
     }
     
     

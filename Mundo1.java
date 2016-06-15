@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Classe responsável por criar e gerenciar o cenário do mundo 1 do jogo do gato Zé.
@@ -22,7 +23,7 @@ public class Mundo1 extends World
     //Constantes da Natureza do mundo
     public static final int     LARGURA_CENARIO = 700;
     public static final int     ALTURA_CENARIO = 390;
-    public static final int     NIVEL_DO_SOLO = 340;
+    public static final int     NIVEL_DO_SOLO = 390;
     public static final int     FORCA_DA_GRAVIDADE = 5;
 
     //Variáveis de  controle do Jogo
@@ -50,14 +51,15 @@ public class Mundo1 extends World
         Instrucoes instrucoes = new  Instrucoes();
 
         //Colocos os objetos dentro do cenário cada
-        addObject(ze, 83, alturaInicialDoSolo(ze));
+        //criaSolo();
         addObject(instrucoes, 602, 80);
-        plataforma   = new Plataforma();
-        addObject(plataforma, 336, alturaInicialDoSolo(plataforma));
-        addObject(new Plataforma(), 434, 298);
-        addObject(new Plataforma(), 564, 276);
-        addObject(new Plataforma(), 650,203);
 
+        //addObject(new Plataforma(), 434, 298);
+        //addObject(new Plataforma(), 564, 276);
+        //addObject(new Plataforma(), 650,203);
+        addObject(ze, 83, alturaInicialDoSolo(ze)-100);
+
+        prepare();
     }
 
     /**
@@ -90,7 +92,7 @@ public class Mundo1 extends World
 
             atualizaObjetosdoCenario();
         } 
-
+        //criaSolo();
         contaCiclo();
         aplicarForcaDaGravidade();
     }
@@ -172,25 +174,59 @@ public class Mundo1 extends World
     }
 
     /**
+     * Retorna todos os objetos do cenário que deve ser atualizados conforme a movimentaçao do personagem
+     * OBS: no futuro poderá retor nar apenas a classe Objeto que assim ja deve resolver... vamos ver
+     */
+    private List<Actor> getObjetosDoCenario(){
+        List<Actor> listaDeObjetos = new ArrayList<Actor>();
+        //listaDeObjetos.addAll( getObjects(Plataforma.class));
+        //listaDeObjetos.addAll( getObjects(Piso.class));
+        listaDeObjetos.addAll( getObjects(Objeto.class)); // Chamada generica
+        return listaDeObjetos;
+
+    }
+
+    /**
+     * Metodo temporário para teste de movimento
+     */
+    private void retirarObjetoDaCena(Actor objeto){
+
+        if(objeto.getX() == 0) {
+            PisoReto p = new PisoReto();
+            addObject(p, LARGURA_CENARIO, objeto.getY());
+            removeObject(objeto);
+
+        }else if(objeto.getX() == LARGURA_CENARIO-1) {
+            PisoReto p = new PisoReto();
+            addObject(p, 0, objeto.getY());
+            removeObject(objeto);
+
+        }
+
+    }
+
+    /**
      * Atualizo a posição dos objetos do jogo sempre que a cena for atualizada, se o herói foi pra direita a posição do objeto diminui, se para esquerda avança
      */
     private void atualizaObjetosdoCenario(){
 
-        List<Plataforma> listaDePlataformas = getObjects(Plataforma.class);
+        List<Actor> objetosDoCenario = getObjetosDoCenario();
 
         if(ze.estaIndoPraDireta() && oCenarioPodeAtualizar){
-            for(Objeto plataforma : listaDePlataformas){
-                plataforma.move(TAMANHO_DO_QUADRO * -1);
+            for(Actor objeto : objetosDoCenario){
+                objeto.move(TAMANHO_DO_QUADRO * -1);
+                retirarObjetoDaCena(objeto);
             }
-
         }
         if(ze.estaIndoPraEsquerda() && oCenarioPodeAtualizar){
-            for(Objeto plataforma : listaDePlataformas){
-                plataforma.move(TAMANHO_DO_QUADRO );
+            for(Actor objeto : objetosDoCenario){
+                objeto.move(TAMANHO_DO_QUADRO );
+                retirarObjetoDaCena(objeto);
             }
         }
 
     }
+
     /**
      * Solicita ao cenário para parar de atualizar sua movimentação
      */    
@@ -204,6 +240,7 @@ public class Mundo1 extends World
         }
 
     }
+
     /**
      * Solicita ao cenário para voltar atualizar sua movimentação
      */  
@@ -249,6 +286,43 @@ public class Mundo1 extends World
         }
 
     }
+    // Temporario apenas para teste
+    private void criaSolo(){
+        int larguraPiso = 87;
+        int posicaoDoQuadro = 0; //será a posição da fileta(slice/quadros) dentro da imagem do cenário
+        while(posicaoDoQuadro < getWidth()){ // Começo a criar a imagem
+            addObject(new PisoReto(), posicaoDoQuadro, 363);
+            posicaoDoQuadro += 87; // atualizo para a posição da nova fileta
+        }
 
+    }
+
+    /**
+     * Prepara o mundo para o início do programa.
+     * Ou seja: criar os objetos iniciais e adicioná-los ao mundo.
+     */
+    private void prepare()
+    {
+        PisoReto pisoreto = new PisoReto();
+        addObject(pisoreto,320,363);
+        pisoreto.setLocation(329,363);
+        PisoReto pisoreto2 = new PisoReto();
+        addObject(pisoreto2,423,363);
+        pisoreto2.setLocation(416,363);
+        PisoReto pisoreto3 = new PisoReto();
+        addObject(pisoreto3,510,363);
+        pisoreto3.setLocation(503,363);
+        PisoReto pisoreto4 = new PisoReto();
+        addObject(pisoreto4,418,315);
+        pisoreto4.setLocation(408,308);
+        PisoReto pisoreto5 = new PisoReto();
+        addObject(pisoreto5,295,223);
+        pisoreto5.setLocation(293,223);
+        pisoreto5.setLocation(495,308);
+        PisoReto pisoreto6 = new PisoReto();
+        addObject(pisoreto6,663,271);
+        pisoreto6.setLocation(657,257);
+        pisoreto6.setLocation(641,309);
+    }
 }
 
